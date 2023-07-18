@@ -49,7 +49,7 @@ data:
 #
 # FIXME::REQUIRED: Specifies the target column name for model training and evaluation.
 #
-target_col: ""
+target_col: "total_lift"
 steps:
   split:
     #
@@ -68,21 +68,41 @@ steps:
   train:
     using: estimator_spec
     # Specifies the method that defines the estimator type and parameters to use for model training
+    
+    #estimator_method: steps.train.estimator_rf
+    tuning:
+      enabled: True
+      algorithm: "hyperopt.rand.suggest"
+      max_trials: 5
+      #early_stop_fn: my_early_stop_fn
+      parallelism: 1
+      sample_fraction: 0.5
+      parameters:
+        n_estimators: 
+          values: [10, 40, 100, 150]
+        max_depth: 
+          values: [4, 8, 12, 16]
+        #alpha: #comment this parameter when using randomforest
+        #  distribution: "uniform"
+        #  low: 0.0
+        #  high: 0.01
+        #penalty: #comment this parameter when using randomforest
+        #  values: ["l1", "l2", "elasticnet"]
     estimator_method: steps.train.estimator_fn
   evaluate:
     #
     # FIXME::OPTIONAL: Sets performance thresholds that a trained model must meet in order to be
     #                  eligible for registration to the MLflow Model Registry.
     #
-    # validation_criteria:
-    #   - metric: root_mean_squared_error
-    #     threshold: 10
+    validation_criteria:
+      - metric: root_mean_squared_error
+        threshold: 2
   register:
     #
     # FIXME::REQUIRED: Specifies the name of the Registered Model to use when registering a trained
     #                  model to the MLflow Model Registry.
     #
-    model_name: ""
+    model_name: "total_lift_prediction"
     # Indicates whether or not a model that fails to meet performance thresholds should still
     # be registered to the MLflow Model Registry
     allow_non_validated_model: false
@@ -102,7 +122,7 @@ metrics:
   #                  Built-in metrics are: example_count, mean_absolute_error, mean_squared_error,
   #                  root_mean_squared_error, sum_on_label, mean_on_label, r2_score, max_error,
   #                  mean_absolute_percentage_error
-  primary: ""
+  primary: "root_mean_squared_error"
   #
   # FIXME::OPTIONAL: Defines custom performance metrics to compute during model development.
   #

@@ -1,5 +1,5 @@
 # Databricks notebook source
-
+# MAGIC
 # MAGIC %md
 # MAGIC # MLflow Regression Pipeline Databricks Notebook
 # MAGIC This notebook runs the MLflow Regression Pipeline on Databricks and inspects its results.
@@ -12,6 +12,7 @@
 
 # MAGIC %pip install mlflow[pipelines]
 # MAGIC %pip install -r ../requirements.txt
+# MAGIC !pip install hyperopt
 
 # COMMAND ----------
 
@@ -74,7 +75,6 @@ print(trained_model)
 # MAGIC %md ### Evaluate the resulting model using validation data profile:
 
 # COMMAND ----------
-
 
 p.run("evaluate")
 
