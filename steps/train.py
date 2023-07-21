@@ -19,13 +19,13 @@ def estimator_fn(estimator_params: Dict[str, Any] = None):
     if estimator_params is None:
         estimator_params = {}
 
-    #from sklearn.linear_model import SGDRegressor
+    from sklearn.linear_model import SGDRegressor
 
-    #return SGDRegressor(random_state=42, **estimator_params)
+    return SGDRegressor(random_state=42, **estimator_params)
 
-    from sklearn.ensemble import RandomForestRegressor
+    #from sklearn.ensemble import RandomForestRegressor
 
-    return  RandomForestRegressor(random_state=10, oob_score = True, **estimator_params)
+    #return  RandomForestRegressor(random_state=10, oob_score = True, **estimator_params)
 
 def estimator_rf(estimator_params: Dict[str, Any] = {}):
     """

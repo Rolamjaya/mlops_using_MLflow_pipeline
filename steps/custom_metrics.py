@@ -38,3 +38,25 @@ def get_custom_metrics(
     # FIXME::OPTIONAL: implement custom metrics calculation here.
 
     raise NotImplementedError
+
+def example_custom_metric_fn(eval_df, builtin_metrics, artifacts_dir):
+   """
+   This example custom metric function creates a metric based on the ``prediction`` and
+   ``target`` columns in ``eval_df`` and a metric derived from existing metrics in
+   ``builtin_metrics``. It also generates and saves a scatter plot to ``artifacts_dir`` that
+   visualizes the relationship between the predictions and targets for the given model to a
+   file as an image artifact.
+   """
+   metrics = {
+       "squared_diff_plus_one": np.sum(np.abs(eval_df["prediction"] - eval_df["target"] + 1) ** 2),
+       "sum_on_label_divided_by_two": builtin_metrics["sum_on_label"] / 2,
+   }
+   plt.scatter(eval_df["prediction"], eval_df["target"])
+   plt.xlabel("Targets")
+   plt.ylabel("Predictions")
+   plt.title("Targets vs. Predictions")
+   plot_path = os.path.join(artifacts_dir, "example_scatter_plot.png")
+   plt.savefig(plot_path)
+   plt.show()
+   artifacts = {"example_scatter_plot_artifact": plot_path}
+   return Dict["metrics_yow", metrics.squared_diff_plus_one]

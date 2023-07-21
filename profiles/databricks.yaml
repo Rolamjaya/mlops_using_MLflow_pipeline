@@ -2,14 +2,14 @@
 # FIXME::REQUIRED: set an MLflow experiment name to track pipeline executions and artifacts. On Databricks, an
 #                  experiment name must be a valid path in the workspace.
 #
-#experiment:
-#  name: "athlete_model"
-#
+experiment:
+  name: "/Users/rolamjayahs@gmail.com/Crossfit_Prediction"
+  #tracking_uri: "databricks://"
 # FIXME::OPTIONAL: Set the registry server URI, useful if you have a registry server different
 #                  from the tracking server. First create a Databricks Profile, see
 #                  https://github.com/databricks/databricks-cli#installation
-# model_registry:
-#   uri: "databricks://DATABRICKS_PROFILE_NAME"
+  #model_registry:
+  # uri: "databricks://"
 
 # FIXME::REQUIRED: Specify the training and evaluation data location. This is usually a DBFS
 # location ("dbfs:/...") or a SQL table ("SCHEMA.TABLE").

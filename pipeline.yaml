@@ -37,7 +37,7 @@ data:
   # sql: SELECT col1, col2 FROM {{INGEST_DATA_LOCATION}}
   # If the `delta` `format` is specified, you can also configure the Delta table `version` to read
   # or the `timestamp` at which to read data
-  # version: 2
+  version: 1
   # timestamp: 2022-06-01T00:00:00.000Z
 # FIXME::OPTIONAL: Specify the dataset to use for batch scoring. All params serve the same function 
 #                  as in `data`
@@ -78,22 +78,24 @@ steps:
       parallelism: 1
       sample_fraction: 0.5
       parameters:
-        n_estimators: 
-          values: [10, 40, 100, 150]
-        max_depth: 
-          values: [4, 8, 12, 16]
-        #alpha: #comment this parameter when using randomforest
-        #  distribution: "uniform"
-        #  low: 0.0
-        #  high: 0.01
-        #penalty: #comment this parameter when using randomforest
-        #  values: ["l1", "l2", "elasticnet"]
+        #n_estimators: 
+        #  values: [10, 40, 100, 150]
+        #max_depth: 
+        #  values: [4, 8, 12, 16]
+        alpha: #comment this parameter when using randomforest
+          distribution: "uniform"
+          low: 0.0
+          high: 0.01
+        penalty: #comment this parameter when using randomforest
+          values: ["l1", "l2", "elasticnet"]
     estimator_method: steps.train.estimator_fn
+    step: 1
   evaluate:
     #
     # FIXME::OPTIONAL: Sets performance thresholds that a trained model must meet in order to be
     #                  eligible for registration to the MLflow Model Registry.
     #
+    #custom_artifacts: steps.custom_metrics.example_custom_metric_fn
     validation_criteria:
       - metric: root_mean_squared_error
         threshold: 2
@@ -123,11 +125,12 @@ metrics:
   #                  root_mean_squared_error, sum_on_label, mean_on_label, r2_score, max_error,
   #                  mean_absolute_percentage_error
   primary: "root_mean_squared_error"
+  step: 1
   #
   # FIXME::OPTIONAL: Defines custom performance metrics to compute during model development.
   #
   # custom:
   #   - name: ""
-  #     function: get_custom_metrics
+  #     function: steps.custom_metrics.example_custom_metric_fn
   #     greater_is_better: False
 
